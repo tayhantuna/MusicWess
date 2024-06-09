@@ -1,0 +1,134 @@
+/* Genel Stiller */
+body {
+    background-color: #000000; /* Siyah */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Daha okunaklı yazı tipi seçimi */
+    
+}
+html {
+    height: 100%;
+    
+border: 3px solid #ffd700; /* Altın Sarısı */
+    
+    padding: 20px; /* İçerik ile kenarlık arasındaki boşluk */
+}
+#desp p{
+  color: #ffd700;  
+}
+h1,h4{
+    color: #ffd700;
+}
+.container {
+    max-width: 800px;
+    margin: auto;
+}
+
+/* Navbar Stilleri */
+.navbar {
+    background-color: #343a40; /* Koyu Gri */
+}
+
+.navbar-brand {
+    font-size: 1.5rem;
+    color: #ffffff; /* Beyaz */
+}
+
+.navbar-brand:hover {
+    color: #ffffff; /* Beyaz */
+}
+
+.navbar .btn {
+    margin-left: 15px; /* Butonlar arasındaki boşluğu artırma */
+}
+
+/* Dosya Yükleme Bölümü */
+#file-upload {
+    text-align: center;
+    margin-top: 20px;
+}
+
+#file-input {
+    display: none; /* Dosya girişini gizle */
+}
+
+#upload-btn {
+    display: inline-block;
+    cursor: pointer;
+    margin-top: 10px; /* Düğmenin üst boşluğunu artırma */
+    padding: 8px 15px; /* Düğme boyutlarını artırma */
+    background-color: #007bff; /* Mavi */
+    color: #ffffff; /* Beyaz */
+    border: none;
+    border-radius: 5px;
+}
+
+#upload-btn:hover {
+    background-color: #0056b3; /* Koyu Mavi */
+}
+
+/* Müzik Listesi */
+#music-items {
+    list-style-type: none; /* Nokta işaretlerini kaldır */
+    padding: 0;
+}
+
+#music-items .list-group-item {
+    background-color: #ffffff; /* Beyaz */
+    margin-bottom: 10px; /* Öğeler arası boşluğu artırma */
+    padding: 15px; /* Öğe içeriğinin doluluk oranını artırma */
+    border-radius: 5px;
+    border: 2px solid #ffd700; /* Altın Sarısı */
+}
+
+#music-items .list-group-item:hover {
+    background-color: #f0f0f0; /* Açık Gri */
+    cursor: pointer;
+}
+
+#music-items .play-btn,
+#music-items .edit-btn {
+    margin-left: 15px;
+}
+
+/* Çalma Kontrolleri */
+#player-controls {
+    text-align: center;
+    margin-top: 20px;
+}
+
+#player-controls button {
+    margin: 0 8px; /* Butonlar arasındaki boşluğu azaltma */
+    padding: 8px 15px; /* Buton boyutlarını artırma */
+    font-size: 1rem; /* Buton yazı tipi boyutunu azaltma */
+}
+
+#seek-slider {
+    width: 80%;
+    margin-top: 10px; /* Kaydırıcıyı biraz yukarı taşıma */
+}
+
+#current-time,
+#duration-time {
+    font-size: 0.9rem;
+    color: #ffd700;
+}
+
+/* Çalma Listesi */
+#playlist-container .list-group-item {
+    background-color: #ffffff; /* Beyaz */
+    margin-bottom: 10px; /* Öğeler arası boşluğu artırma */
+    padding: 15px; /* Öğe içeriğinin doluluk oranını artırma */
+    border-radius: 5px;
+}
+
+#playlist-container .list-group-item:hover {
+    background-color: #f0f0f0; /* Açık Gri */
+    cursor: pointer;
+}
+
+/* Metadata Düzenleme Modalı */
+#edit-metadata-modal {
+    color: #000000; /* Siyah */
+}
+#file-name-label{
+    border: 3px solid #ffd700; /* Altın Sarısı */
+}

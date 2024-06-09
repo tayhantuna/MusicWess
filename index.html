@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Müzik dosyalarınızı bulutta güvenle saklayın. Ücretsiz müzik barındırma hizmetimizle müziklerinizi paylaşın ve yönetin.">
+  <meta name="keywords" content="Müzik barındırma, Müzik bulut depolama, Online müzik yükleme, Müzik dosyaları paylaşma, Ücretsiz müzik barındırma, Sanatçılar için müzik depolama,musicwess">
+  <meta name="depolama" content="MusicWess">
+    <title>MusicWess</title>
+    <link rel="icon" href="music.jpg" type="image/jpeg">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <link rel="stylesheet" href="styles.css"> <!-- Güncellenmiş CSS dosyası eklendi -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.3/howler.min.js"></script>
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            
+            
+            <div id="desp">
+                <br />
+                <h1>Musicwess-Cloud</h1>
+               <p id="desp-p">
+                  musicwess-cloud, müzik dosyalarınızı bulutta saklar. Ücretsiz müzik barındırma hizmetimizle müziklerinizi barındirabilirsiniz(lütfen dikkat ediniz, bu platformda kendi oluşturduğunuz ve kopyası bulunmayan muzikleri saklamayınız sadece dinlemk istediğiniz müzikleri
+saklayınız.)
+               </p>
+                <br />
+               <div>
+                <button id="sign-in-btn" class="btn btn-primary">Giriş Yap</button>
+                <button id="sign-out-btn" class="btn btn-secondary">Çıkış Yap</button>
+               </div>
+            </div>
+            
+            
+        </div>
+
+        <div id="file-upload" class="mb-4" style="display: none;">
+            <div class="custom-file">
+                <input type="file" class="custom-file-input" id="file-input" accept="audio/*">
+                <label class="custom-file-label" for="file-input" id="file-name-label">Müzik Dosyası Seçin</label>
+            </div>
+            <button id="upload-btn" class="btn btn-primary mt-2">Yükle</button>
+        </div>
+<div id="player-controls" class="mb-4" style="display: none;">
+            <h4 id="current-track"></h4>
+            <div class="d-flex justify-content-between align-items-center">
+                <button id="prev-btn" class="btn btn-secondary"><i class="fas fa-backward"></i></button>
+                <button id="play-pause-btn" class="btn btn-secondary"><i class="fas fa-play"></i></button>
+                <button id="next-btn" class="btn btn-secondary"><i class="fas fa-forward"></i></button>
+            </div>
+            <input id="seek-slider" type="range" min="0" max="100" value="0" class="custom-range mt-2">
+            <div class="d-flex justify-content-between">
+                <span id="current-time">0:00</span>
+                <span id="duration-time">0:00</span>
+            </div>
+            <div id="loop-controls" class="mb-4">
+                <button class="btn btn-secondary loop-mode-btn" data-loop-mode="none"><i class="fas fa-times"></i> Döngü Yok</button>
+                <button class="btn btn-secondary loop-mode-btn" data-loop-mode="once"><i class="fas fa-redo"></i> Bir Kez Döngü</button>
+                <button class="btn btn-secondary loop-mode-btn" data-loop-mode="repeat"><i class="fas fa-redo-alt"></i> Sürekli Döngü</button>
+            </div>
+            <button id="download-btn" class="btn btn-primary mt-2"><i class="fas fa-download"></i> İndir</button>
+        </div>
+    </div>
+        <ul id="music-items" class="list-group mb-4"></ul>
+
+        
+
+    <!-- Edit Metadata Modal -->
+    <div class="modal fade" id="edit-metadata-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Meta Verileri Düzenle</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="edit-metadata-form">
+                        <div class="form-group">
+                            <label for="edit-artist">Sanatçı</label>
+                            <input type="text" class="form-control" id="edit-artist">
+                        </div>
+                        <div class="form-group">
+                            <label for="edit-album">Albüm</label>
+                            <input type="text" class="form-control" id="edit-album">
+                        </div>
+                        <div class="form-group">
+                            <label for="edit-genre">Tür</label>
+                            <input type="text" class="form-control" id="edit-genre">
+                        </div>
+                        <input type="hidden" id="edit-metadata-id">
+                        <button type="submit" class="btn btn-primary">Kaydet</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+    const fileInput = document.getElementById('file-input');
+const fileNameLabel = document.getElementById('file-name-label');
+
+fileInput.addEventListener('change', () => {
+    if (fileInput.files.length > 0) {
+        const fileName = fileInput.files[0].name;
+        fileNameLabel.textContent = fileName;
+    } else {
+        fileNameLabel.textContent = 'Dosya seçilmedi';
+    }
+});   
+    </script>
+    
+    <script type="module" src="app.js"></script>
+</body>
+</html>
