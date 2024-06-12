@@ -28,6 +28,7 @@ let loopMode = 'none'; // 'none', 'once', 'repeat'
 
 // HTML elementlerine referanslar
 const p = document.getElementById('desp-p');
+const sp = document.getElementById('speed');
 const signInBtn = document.getElementById('sign-in-btn');
 const signOutBtn = document.getElementById('sign-out-btn');
 const fileUpload = document.getElementById('file-upload');
@@ -111,6 +112,9 @@ nextBtn.addEventListener('click', () => {
 
 downloadBtn.addEventListener('click', () => {
   downloadCurrentTrack();
+});
+sp.addEventListener('change', () => {
+  changePlaybackSpeed(sp.value);
 });
 
 loopModeButtons.forEach(button => {
@@ -259,14 +263,14 @@ function playTrack(index) {
     onend: () => {
       isPlaying = false;
       updatePlayerUI();
-      if (loopMode === 'once') {
+           if (loopMode === 'once') {
         sound.play();
         loopMode = 'none'
       } else if (loopMode === 'repeat') {
         sound.play();
       }else{
         playNextTrack();
-      }
+           }
 }
       });
 
@@ -276,19 +280,19 @@ function playTrack(index) {
 }
 
 function playPreviousTrack() {
-  let newIndex = currentTrackIndex - 1;
-  if (newIndex < 0) {
-    newIndex = musicListArray.length - 1;
+  currentTrackIndex--; // Şu anki parça indeksini azalt
+  if (currentTrackIndex < 0) {
+    currentTrackIndex = musicListArray.length - 1;
   }
-  playTrack(newIndex);
+  playTrack(currentTrackIndex);
 }
 
 function playNextTrack() {
-  let newIndex = currentTrackIndex + 1;
-  if (newIndex >= musicListArray.length) {
-    newIndex = 0;
+  currentTrackIndex++; // Şu anki parça indeksini artır
+  if (currentTrackIndex >= musicListArray.length) {
+    currentTrackIndex = 0;
   }
-  playTrack(newIndex);
+  playTrack(currentTrackIndex);
 }
 
 function updatePlayerUI() {
@@ -301,24 +305,25 @@ function updatePlayerUI() {
 
 // seek slider'ını her saniyede güncelleyen zamanlayıcı
 const seekSliderInterval = setInterval(() => {
-    if (sound && isPlaying) {
+    if (sound && sound.duration() && isPlaying) { // Ses yüklenmiş mi kontrolü ekleniyor
         seekSlider.value = (sound.seek() / sound.duration()) * 100 || 0;
         currentTime.textContent = formatTime(Math.floor(sound.seek()));
         durationTime.textContent = formatTime(Math.floor(sound.duration()));
     }
-}, 1000); // her saniye güncelle
+}, 1000);
 
 function formatTime(seconds) {
   const minutes = Math.floor(seconds / 60) || 0;
   const remainingSeconds = Math.floor(seconds % 60) || 0;
   return `${minutes}:${remainingSeconds < 10 ? '0' : ''}${remainingSeconds}`;
 }
-
 function downloadCurrentTrack() {
   const track = musicListArray[currentTrackIndex];
   const link = document.createElement('a');
   link.href = track.url;
+  link.target = '_blank';
   link.download = track.name;
+  link.style.display = 'none'; // Bağlantıyı görünmez yap
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);
@@ -363,9 +368,6 @@ async function deleteMusic(id, index, fileName) {
 }
 // Arama kutusuna her yazıldığında veya kriter seçildiğinde çalışacak fonksiyon
 searchInput.addEventListener('input', performSearch);
-searchCriteria.addEventListener('change', performSearch);
-
-
 // Filtrelenmiş müzik listesini görüntüleme fonksiyonu
 function displayFilteredMusicList(filteredMusicList) {
   musicList.innerHTML = '';
@@ -427,4 +429,9 @@ async function performSearch() {
   } catch (error) {
     alert('Arama işlemi sırasında bir hata oluştu: ' + error);
   }
-                            }
+}
+function changePlaybackSpeed(speed) {
+  if (sound) {
+    sound.rate(speed); // Oynatma hızını ayarla
+  }
+}
