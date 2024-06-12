@@ -261,7 +261,10 @@ function playTrack(index) {
       updatePlayerUI();
       if (loopMode === 'once') {
         sound.play();
+        loopMode = 'none'
       } else if (loopMode === 'repeat') {
+        sound.play();
+      }else{
         playNextTrack();
       }
 }
