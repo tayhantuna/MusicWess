@@ -7,9 +7,14 @@ body {
 html {
     height: 100%;
     
-border: 3px solid #ffd700; /* Altın Sarısı */
+border-top: 3px solid #ffd700;
+  border-right: 3px solid #ffd700;
+  border-left: 3px solid #ffd700;
     
     padding: 20px; /* İçerik ile kenarlık arasındaki boşluk */
+}
+#poco{
+    color:#ffd700 ;
 }
 #desp p{
   color: #ffd700;  
@@ -131,4 +136,12 @@ h1,h4{
 }
 #file-name-label{
     border: 3px solid #ffd700; /* Altın Sarısı */
+}
+.advanced-search-container {
+  background-color: #fff;
+  border: 1px solid #ccc;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  overflow: auto; /* İçerik taşarsa kaydırma çubuğu ekle */
 }
