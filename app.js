@@ -26,7 +26,7 @@ let currentTrackIndex = 0;
 let musicListArray = [];
 let loopMode = 'none'; // 'none', 'once', 'repeat'
 
-// HTML elementlerine referanslar
+const selectinput = document.getElementById('selectinput');
 const p = document.getElementById('desp-p');
 const sp = document.getElementById('speed');
 const signInBtn = document.getElementById('sign-in-btn');
@@ -192,6 +192,7 @@ function loadMusicList() {
 function uploadFile(file) {
   const storageRef = ref(storage, `music/${file.name}`);
   uploadBytes(storageRef, file).then(snapshot => {
+    
     getDownloadURL(snapshot.ref).then(url => {
       saveMusicMetadata(file.name, url, auth.currentUser.uid);
     });
@@ -201,16 +202,18 @@ function uploadFile(file) {
 function saveMusicMetadata(name, url,author) {
   addDoc(collection(firestore, 'music'), { name, url ,author})
     .then(() => loadMusicList())
-    .catch(error => alert('Error adding document: ' + error));
+    .catch(error => alert('Doküman eklenirken hata oluştu: ' + error));
 }
 
 function openEditMetadataModal(id, index,inf) {
   const track = musicListArray[index];
+  document.getElementById('edit-name').value = '';
   document.getElementById('edit-artist').value = '';
   document.getElementById('edit-album').value = '';
   document.getElementById('edit-genre').value = '';
 
   // Mevcut değerleri placeholder olarak ayarla
+  document.getElementById('edit-name').placeholder = inf.name || "İsim";
   document.getElementById('edit-artist').placeholder = inf.artist || 'Sanatçı adı';
   document.getElementById('edit-album').placeholder = inf.album || 'Albüm adı';
   document.getElementById('edit-genre').placeholder = inf.genre || 'Tür';
@@ -227,18 +230,36 @@ document.getElementById('edit-metadata-form').addEventListener('submit', functio
 
 function updateMetadata(id) {
   const docRef = doc(firestore, 'music', id);
-  const updatedData = {
-    artist: document.getElementById('edit-artist').value || null,
-    album: document.getElementById('edit-album').value || null,
-    genre: document.getElementById('edit-genre').value || null
-  };
+  const updatedData = {};
 
-  updateDoc(docRef, updatedData).then(() => {
-    $('#edit-metadata-modal').modal('hide');
-    loadMusicList();
-  }).catch(error => console.error('Error updating document: ', error));
+  const newName = document.getElementById('edit-name').value.trim();
+  const newArtist = document.getElementById('edit-artist').value.trim();
+  const newAlbum = document.getElementById('edit-album').value.trim();
+  const newGenre = document.getElementById('edit-genre').value.trim();
+  
+  if (newName !== ''){
+    updatedData['name'] = newName;
+  }
+  if (newArtist !== ''){
+    updatedData['artist'] = newArtist;
+  }
+  if (newAlbum !== ''){
+    updatedData['album'] = newAlbum;
+  }
+  if (newGenre !== ''){
+    updatedData['genre'] = newGenre;
+  }
+
+  updateDoc(docRef, updatedData)
+    .then(() => {
+      // Kaydetme işleminden sonra modal'ı kapat
+      $('#edit-metadata-modal').modal('hide');
+      // Veri tablosunu güncelle
+      loadMusicList();
+      alert('İçerik başarıyla güncellendi.');
+    })
+    .catch(error => console.error('Error updating document: ', error));
 }
-
 function playTrack(index) {
   if (index < 0 || index >= musicListArray.length) return;
 
@@ -263,21 +284,23 @@ function playTrack(index) {
     onend: () => {
       isPlaying = false;
       updatePlayerUI();
-           if (loopMode === 'once') {
+      if (loopMode === 'once') {
         sound.play();
-        loopMode = 'none'
+        loopMode = 'none';
       } else if (loopMode === 'repeat') {
         sound.play();
-      }else{
+      } else {
         playNextTrack();
-           }
-}
-      });
+      }
+    }
+  });
 
   sound.play();
   currentTrack.textContent = track.name;
   playerControls.style.display = 'block'; // Oynatıcı kontrollerini göster
 }
+
+
 
 function playPreviousTrack() {
   currentTrackIndex--; // Şu anki parça indeksini azalt
@@ -412,26 +435,34 @@ function displayFilteredMusicList(filteredMusicList) {
 }
 // Arama kutusuna her yazıldığında veya kriter seçildiğinde çalışacak fonksiyon
 searchInput.addEventListener('input', performSearch);
+selectinput.addEventListener('change', performSearch);
+
 // Arama işlevi
 async function performSearch() {
   try {
     const searchText = searchInput.value.toLowerCase(); // Arama metnini alın ve küçük harfe çevirin
-
-    // Yerel müzik listesi oluşturun
-    const localMusicList = musicListArray.slice();
+    const selected = selectinput.value; // Seçilen kriteri alın
 
     // Arama kriterine göre filtreleme yapın
-    const filteredMusicList = localMusicList.filter(music => {
-      return music.name.toLowerCase().includes(searchText); // return eklendi
+    const filteredMusicList = musicListArray.filter((music) => {
+      const fieldValue = music[selected];
+
+      // fieldValue'nun tanımlı olup olmadığını ve string olup olmadığını kontrol et
+      if (fieldValue && typeof fieldValue === 'string') {
+        return fieldValue.toLowerCase().includes(searchText);
+      }
+
+      return false;
     });
 
-    displayFilteredMusicList(filteredMusicList); // Filtrelenmiş müzik listesini görüntüle
+    // Filtrelenmiş müzik listesini görüntüle
+    displayFilteredMusicList(filteredMusicList);
   } catch (error) {
-    alert('Arama işlemi sırasında bir hata oluştu: ' + error);
+    console.error("Arama sırasında bir hata oluştu:", error);
   }
 }
 function changePlaybackSpeed(speed) {
   if (sound) {
     sound.rate(speed); // Oynatma hızını ayarla
   }
-}
+          }
