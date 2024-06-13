@@ -1,7 +1,7 @@
 /* Genel Stiller */
 body {
     background-color: #000000; /* Siyah */
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Daha okunaklı yazı tipi seçimi */
+    
     
 }
 html {
@@ -13,11 +13,26 @@ border-top: 3px solid #ffd700;
     
     padding: 20px; /* İçerik ile kenarlık arasındaki boşluk */
 }
+.bebas-neue-regular {
+  font-family: "Bebas Neue", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+.concert-one-regular {
+  font-family: "Concert One", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+.one{
+    font-family: "Bebas Neue", sans-serif;
+}
+
 #poco{
     color:#ffd700 ;
 }
 #desp p{
   color: #ffd700;  
+    font-family: "Concert One", sans-serif;
 }
 h1,h4{
     color: #ffd700;
