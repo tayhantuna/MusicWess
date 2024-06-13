@@ -38,6 +38,12 @@ saklayınız.)
     <div class="row" id ="poco">
 <!-- Arama kutusu -->
 <input type="text" id="search-input" class="form-control mb-2" placeholder="Arama yapmak için metin girin...">
+        <select id="selectinput" class="form-control mb-2">
+  <option value="name"">isim🏷️</option>
+  <option value="artist">sanatçı🧑‍🎨</option>
+  <option value="genre">tür🤝</option>
+  <option value="album">albüm📕</option>
+        </select>
 
 <!-- Arama kriteri seçme inputu -->
 
@@ -46,11 +52,12 @@ saklayınız.)
         <div id="file-upload" class="mb-4" style="display: none;">
             <div class="custom-file">
                 <input type="file" class="custom-file-input" id="file-input" accept="audio/*">
-                <label class="custom-file-label" for="file-input" id="file-name-label">Müzik Dosyası Seçin</label>
+                <label class="custom-file-label" for="file-input" id="file-name-label">Müzik Dosyası Seçin 👉</label>
             </div>
-            <button id="upload-btn" class="btn btn-primary mt-2">Yükle</button>
+            <button id="upload-btn" class="btn btn-primary mt-2">Müziği buluta yükle ☁️</button>
         </div>
 <div id="player-controls" class="mb-4" style="display: none;">
+    
             <h4 id="current-track"></h4>
             <div class="d-flex justify-content-between align-items-center">
                 <button id="prev-btn" class="btn btn-secondary"><i class="fas fa-backward"></i></button>
@@ -68,10 +75,10 @@ saklayınız.)
                 <button class="btn btn-secondary loop-mode-btn" data-loop-mode="repeat"><i class="fas fa-redo-alt"></i> Sürekli Döngü</button>
             </div>
     <select id="speed" class="form-control mb-2">
-  <option value="0.5"">0.5</option>
-  <option value="1">normal</option>
-  <option value="1.5">1.5</option>
-  <option value="2">2</option>
+  <option value="1">normal🐈‍⬛</option>
+  <option value="0.5"">0.5🐢</option>
+  <option value="1.5">1.5🐎</option>
+  <option value="2">2🐇</option>
     </select>
             <button id="download-btn" class="btn btn-primary mt-2"><i class="fas fa-download"></i> İndir</button>
         </div>
@@ -93,9 +100,14 @@ saklayınız.)
                 <div class="modal-body">
                     <form id="edit-metadata-form">
                         <div class="form-group">
+                            <label for="edit-name">İsim</label>
+                            <input type="text" class="form-control" id="edit-name">
+                        </div>
+                        <div class="form-group">
                             <label for="edit-artist">Sanatçı</label>
                             <input type="text" class="form-control" id="edit-artist">
                         </div>
+                        
                         <div class="form-group">
                             <label for="edit-album">Albüm</label>
                             <input type="text" class="form-control" id="edit-album">
